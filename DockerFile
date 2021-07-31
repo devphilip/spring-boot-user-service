@@ -1,0 +1,3 @@
+FROM adoptopenjdk/openjdk11:latest
+ADD target/user-demo.jar user-demo.jar
+ENTRYPOINT ["java", "-jar", "user-service.jar"]

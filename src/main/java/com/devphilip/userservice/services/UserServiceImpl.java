@@ -5,6 +5,7 @@ import com.devphilip.userservice.exceptions.ResourceNotFoundException;
 import com.devphilip.userservice.repositories.UserRepository;
 import com.devphilip.userservice.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Cacheable(value = "userCache")
     public User updateUser(Long id, User user) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty())  resourceNotFoundException(id);
