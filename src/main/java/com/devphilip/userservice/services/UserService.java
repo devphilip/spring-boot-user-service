@@ -33,4 +33,23 @@ public class UserService {
         return repository.findAll();
     }
 
+    public User updateUser(Long id, User user) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException(id);
+        } else {
+            repository.findById(id);
+            return repository.save(user);
+        }
+    }
+
+    public void deleteUser(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException(id);
+        } else {
+            repository.deleteById(id);
+        }
+    }
+
 }
