@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Get all Users")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllUsers(
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "count", defaultValue = "10", required = false) int size,
@@ -51,17 +53,21 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get User by id")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Optional<User>> getUser(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.getUser(id));
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update User's Information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Long id) {
         return ResponseEntity.ok().body(userService.updateUser(id, user));
     }
 
     @DeleteMapping("{/id}")
+    @Operation(summary = "Delete User by id")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser_whenDeleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
